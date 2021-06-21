@@ -393,7 +393,7 @@ void AP_MotorsMatrix::output_armed_stabilizing()
     {
         if (motor_enabled[i]) 
         {
-            if (_frame_type_string == "MAO_VTOL") 
+            if (MOTOR_FRAME_TYPE_MAO_VTOL) 
             {
                 if(i>1) 
                 {
