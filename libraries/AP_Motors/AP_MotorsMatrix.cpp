@@ -18,6 +18,7 @@
 #include <AP_Vehicle/AP_Vehicle.h>
 
 extern const AP_HAL::HAL& hal;
+AP_Motors::motor_frame_type GlobalFrameType;
 
 // init
 void AP_MotorsMatrix::init(motor_frame_class frame_class, motor_frame_type frame_type)
@@ -25,6 +26,8 @@ void AP_MotorsMatrix::init(motor_frame_class frame_class, motor_frame_type frame
     // record requested frame class and type
     _active_frame_class = frame_class;
     _active_frame_type = frame_type;
+    GlobalFrameType = frame_type;
+    
 
     if (frame_class == MOTOR_FRAME_SCRIPTING_MATRIX) {
         // if Scripting frame class, do nothing scripting must call its own dedicated init function
@@ -393,7 +396,7 @@ void AP_MotorsMatrix::output_armed_stabilizing()
     {
         if (motor_enabled[i]) 
         {
-            if (MOTOR_FRAME_TYPE_MAO_VTOL) 
+            if (GlobalFrameType == MOTOR_FRAME_TYPE_MAO_VTOL) 
             {
                 if(i>1) 
                 {
@@ -746,8 +749,8 @@ void AP_MotorsMatrix::setup_motors(motor_frame_class frame_class, motor_frame_ty
                     _frame_type_string = "MAO_VTOL";
                     add_motor_raw(AP_MOTORS_MOT_1, 0.0f,0.0f,0.0f,1);
                     add_motor_raw(AP_MOTORS_MOT_2, 0.0f,0.0f,0.0f,4);
-                    add_motor(AP_MOTORS_MOT_4,   45, AP_MOTORS_MATRIX_YAW_FACTOR_CCW, 2);
                     add_motor(AP_MOTORS_MOT_3, -135, AP_MOTORS_MATRIX_YAW_FACTOR_CCW, 5);
+                    add_motor(AP_MOTORS_MOT_4,   45, AP_MOTORS_MATRIX_YAW_FACTOR_CCW, 2);
                     add_motor(AP_MOTORS_MOT_5,  -45, AP_MOTORS_MATRIX_YAW_FACTOR_CW,  6);
                     add_motor(AP_MOTORS_MOT_6,  135, AP_MOTORS_MATRIX_YAW_FACTOR_CW,  3);
                     break;
